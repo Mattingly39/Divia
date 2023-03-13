@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/Divia/vite.svg">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="">
+    <title>Divia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+ <!--   <script src="./scripts/createmap.js"></script>   -->
+    <script src="./scripts/calcdistd.js"></script>
+    <script src="./scripts/calcdista.js"></script>
+   <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+
+    <script type="module" crossorigin src="/Divia/assets/index.e95fb4e8.js"></script>
+    <link rel="stylesheet" href="/Divia/assets/index.5a371f86.css">
+  </head>
+  <body>
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status" id="loading"><span class="sr-only">Loading...</span></div>
+  </div>
+  <br><br>
+  <div class="flex items-center justify-center col-span-6 sm:col-span-4 md:col-span-3 xl:col-span-2">
+    <img src="/Divia/assets/Divia.a5b87045.svg" alt="Divia" class="block object-contain h-20">
+  </div>
+  <div class="container max-w-lg px-4 py-28 mx-auto mt-px text-left md:max-w-none md:text-center">
+    <h1 class="text-5xl font-extrabold leading-10 tracking-tight text-center text-gray-900 md:text-center sm:leading-none md:text-6xl lg:text-7xl"><span class="inline md:block">Carte interactive</span> <span class="relative mt-2 text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-indigo-500 md:inline-block">Trouvez facilement votre meilleur itinéraire</span></h1>
+    <div class="mx-auto mt-5 text-gray-500 md:mt-12 md:max-lg md:text-center lg:text-lg">Déplacez sur la carte le <strong>personnage</strong> pour situer votre point de départ et le <strong>drapeau</strong> pour situer votre destination.
+      <br> L'icone "tram" ou "bus" indique pour chacune des lignes tracées, la station la plus proche du point de départ ou du point de destination.
+    </div>
+    <div class="flex flex-col items-center mt-12 text-left">
+      <p id="status"></p>
+      <a id="map-link" target="_blank" href=""></a>
+    <div id="mapDiv" style="height: 700px" class="border-4 border-purple-500 border-solid rounded-lg w-9/12 sm:w-11/12 sm:text-xl"></div>
+  <!--  <a id="map-link2" target="_blank"></a>-->
+
+  <div class="text-center w-9/12 sm:w-11/12" id="chan3"><strong>Station(s) de transfert possible(s) : </strong><a id="nomstationtrs"></a><br></div>
+  <div class="text-center w-9/12 sm:w-11/12" id="iti"><strong>ITINERAIRE SUGGERE</strong><br></div>
+  <div class="text-center w-9/12 sm:w-11/12" id="chan5"><strong>DEPART : Monter à : </strong><a id="nomstationdep"></a><br></div>
+  <div class="text-center w-9/12 sm:w-11/12" id="chan"><strong >Changer à : </strong><a id="nomstationtr"></a><br></div>
+  <div class="text-center w-9/12 sm:w-11/12" id="chan1"><strong>jusqu'à la station : </strong><a id="nomstationarr1"></a><br></div>
+  <div class="text-center w-9/12 sm:w-11/12" id="chan2"><strong>Puis marcher jusqu'à la station : </strong><a id="nomstationdep1"></a><br></div>
+  <div class="text-center w-9/12 sm:w-11/12" id="chan4"><strong>ARRIVEE : Descendre à : </strong><a id="nomstationarr"></a><br></div>
+
+<div class="grid grid-cols-1 gap-4 mt-4 leading-7 text-gray-900 border-0 border-gray-200 sm:mt-6 sm:gap-6 md:mt-8 md:gap-0 lg:grid-cols-2">
+    <!-- Départ -->
+    <div class="relative z-20 flex flex-col items-center max-w-md p-4 mx-auto my-0 bg-white border-4 border-blue-600 border-solid rounded-lg sm:p-6 md:px-8 md:py-5" data-primary="blue-600" data-rounded="rounded-md" data-rounded-max="rounded-full">
+        <h3 class="m-0 text-2xl font-semibold leading-tight tracking-tight text-black text-center items-center border-0 border-gray-200 sm:text-3xl md:text-4xl">DEPART</h3>
+          <h2>Distance de l'arrêt le plus proche : <strong id="distance"></strong></h2>
+          <h2>Nom de la station : <strong id="nomstation"></strong></h2>
+        <p class="mt-6 mb-5 text-gray-900 border-0 border-gray-200 w-80"><a id="picto"></a><a id="thermometre"></a></p>
+    </div>
+    <!-- Arrivée -->
+    <div id ="arr1">
+    <div class="relative z-20 flex flex-col items-center max-w-md p-4 mx-auto my-0 bg-white border-4 border-blue-600 border-solid rounded-lg sm:p-6 md:px-8 md:py-5" data-primary="blue-600" data-rounded="rounded-md" data-rounded-max="rounded-full">
+        <h3 class="m-0 text-2xl font-semibold leading-tight tracking-tight text-black border-0 border-gray-200 sm:text-3xl md:text-4xl">ARRIVEE</h3>
+          <h2>Distance de l'arrêt le plus proche : <strong id="distancea"></strong></h2>
+          <h2>Nom de la station : <strong id="nomstationa"></strong></h2>
+        <p class="mt-6 mb-5 text-gray-900 border-0 border-gray-200 w-80 items-center"><a id="pictoa"></a><a id="thermometrea"></a></p>
+    </div>
+</div>
+</div>
+</div>
+<div id="myModal" class="modal">
+   <img class="modal-content" id="img01">
+<div id="caption"></div>
+</div>
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var imgd = document.getElementById('thermometre');
+var imga = document.getElementById('thermometrea');
+var modalImg = document.getElementById("img01");
+//var captionText = document.getElementById("caption");
+imgd.onclick = function(){
+    modal.style.display = "block";
+    modalImg.src = this.childNodes[0].src;
+//    modalImg.alt = this.alt;
+//    captionText.innerHTML = this.alt;
+}
+imga.onclick = function(){
+    modal.style.display = "block";
+    modalImg.src = this.childNodes[0].src;
+//    modalImg.alt = this.alt;
+//    captionText.innerHTML = this.alt;
+}
+// When the user clicks on <span> (x), close the modal
+modal.onclick = function() {
+    img01.className += " out";
+    setTimeout(function() {
+       modal.style.display = "none";
+       img01.className = "modal-content";
+     }, 400);
+ }    
+</script>
+</body>
+</html>
