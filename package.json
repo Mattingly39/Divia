@@ -1,0 +1,23 @@
+{
+  "name": "divia",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^3.1.8"
+  },
+  "main": "main.js",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "leaflet.markercluster": "^1.5.3",
+    "markers-on-map": "^1.4.0",
+    "string-comparison": "^1.1.0"
+  }
+}
