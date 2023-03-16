@@ -1,7 +1,7 @@
 
 function calculdistance_D(latitudeA, longitudeA, data, key) {
     let pi = Math.PI;
-    let shortest = 500000;
+    let shortest = 5000000;
     let stationpro;
     const latitude1 = latitudeA*(pi/180);
     const longitude1 = longitudeA*(pi/180);
